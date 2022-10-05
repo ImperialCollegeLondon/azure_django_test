@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -122,3 +123,17 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 INSTALLED_APPS.insert(0, "main.apps.MainConfig")
+
+if hostname := os.environ.get("WEBSITE_HOSTNAME"):
+    DEBUG = False
+    ALLOWED_HOSTS = [hostname]
+    SECRET_KEY = os.environ["SECRET_KEY"]
+    EMAIL_HOST = "smarthost.cc.ic.ac.uk"
+    SERVER_EMAIL = "noreply@imperial.ac.uk"
+    ADMINS = [("Christopher Cave-Ayland", "c.cave-ayland@imperial.ac.uk")]
+    # MIDDLEWARE.insert(1, "whitenoise.middleware.WhiteNoiseMiddleware")
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    SECURE_HSTS_SECONDS = 15552000
+    # EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
