@@ -1,4 +1,8 @@
+from logging import getLogger
+
 from django.shortcuts import HttpResponse, render  # noqa: F401
+
+logger = getLogger()
 
 
 def index(request):
@@ -6,4 +10,8 @@ def index(request):
 
 
 def exception(request):
-    raise Exception("a message")
+    try:
+        raise Exception("a message")
+    except Exception:
+        logger.exception("an error occured")
+        raise
