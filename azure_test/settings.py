@@ -138,21 +138,3 @@ if hostname := os.environ.get("WEBSITE_HOSTNAME"):
     SECURE_HSTS_SECONDS = 15552000
     # EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-    LOGGING = {
-        "version": 1,
-        "handlers": {
-            "azure": {
-                "level": "DEBUG",
-                "class": "opencensus.ext.azure.log_exporter.AzureLogHandler",
-             },
-            "console": {
-                "level": "DEBUG",
-                "class": "logging.StreamHandler",
-                "stream": sys.stdout,
-             },
-          },
-        "loggers": {
-            "root": {"handlers": ["azure", "console"]},
-        },
-    }
