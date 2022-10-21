@@ -2,7 +2,7 @@ from logging import getLogger
 
 from django.shortcuts import HttpResponse, render  # noqa: F401
 
-logger = getLogger()
+logger = getLogger("django")
 
 
 def index(request):
