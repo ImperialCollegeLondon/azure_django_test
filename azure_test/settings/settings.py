@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -76,7 +77,7 @@ WSGI_APPLICATION = "azure_test.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "NAME": BASE_DIR / "db" / "db.sqlite3",
     }
 }
 
@@ -122,3 +123,23 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 INSTALLED_APPS.insert(0, "main.apps.MainConfig")
+
+AUTH_USER_MODEL = "main.User"
+
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+if (
+    (postgres_host := os.getenv("POSTGRES_HOST"))
+    and (postgres_user := os.getenv("POSTGRES_USER"))
+    and (postgres_password := os.getenv("POSTGRES_PASSWORD"))
+    and (postgres_name := os.getenv("POSTGRES_NAME"))
+):
+    DATABASES["default"] = dict(
+        ENGINE="django.db.backends.postgresql",
+        NAME=postgres_name,
+        USER=postgres_user,
+        PASSWORD=postgres_password,
+        HOST=postgres_host,
+        PORT=os.getenv("POSTGRES_PORT", 5432),
+        OPTIONS=dict(),
+    )
